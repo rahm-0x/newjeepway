@@ -18,6 +18,7 @@ migrate_working_dir/
 .env
 .env.*
 lib/firebase_options.dart
+lib/firebase_options_env.dart
 assets/.env
 
 # IntelliJ related

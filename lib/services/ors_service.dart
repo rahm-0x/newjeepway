@@ -3,9 +3,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class OrsService {
-  final String _apiKey;
+  final String _apiKey = const String.fromEnvironment('ORS_API_KEY');
 
-  OrsService(this._apiKey);
+  OrsService();
 
   Future<List<LatLng>> getRoute(LatLng start, LatLng end) async {
     final url = Uri.parse('https://api.openrouteservice.org/v2/directions/driving-car/geojson');

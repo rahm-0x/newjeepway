@@ -27,9 +27,8 @@ class _JeepwayHomePageState extends State<JeepwayHomePage> {
   @override
   void initState() {
     super.initState();
-    _orsService = OrsService(dotenv.env['ORS_API_KEY']!);
+    _orsService = OrsService(); // ✅ No param
   }
-
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;

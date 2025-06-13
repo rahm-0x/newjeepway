@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'firebase_options_env.dart'; // Uses env-secured Firebase config
 
@@ -14,11 +13,7 @@ import 'screens/driver_registration_page.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // ✅ Load environment variables from .env
-  await dotenv.load(fileName: "assets/.env");
-
-
-  // ✅ Initialize Firebase using environment-secured options
+  // ✅ No need for dotenv.load when using --dart-define
   await Firebase.initializeApp(
     options: FirebaseOptionsFromEnv.currentPlatform,
   );
