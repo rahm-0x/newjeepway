@@ -3,11 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../utils/constants.dart';
 import '../widgets/map_widget.dart';
 import '../widgets/dropdown_city.dart';
 import '../services/ors_service.dart';
+import '../services/location_tracker.dart'; // ✅ import location tracker
 
 class JeepwayHomePage extends StatefulWidget {
   const JeepwayHomePage({super.key});
@@ -21,14 +23,22 @@ class _JeepwayHomePageState extends State<JeepwayHomePage> {
   final MapController _mapController = MapController();
   final PopupController _popupController = PopupController();
 
-  // ✅ ORS service now uses the key from environment variables
   late final OrsService _orsService;
 
   @override
   void initState() {
     super.initState();
-    _orsService = OrsService(); // ✅ No param
+    _orsService = OrsService();
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      FirebaseFirestore.instance.collection('drivers').doc(user.uid).get().then((doc) {
+        final nickname = doc.data()?['nickname'] ?? 'Driver';
+        startLiveLocationUpdates(nickname); // ✅ start live updates if driver
+      });
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
